@@ -1,0 +1,536 @@
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Kalvox Beta — Tester Guide</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --papaya: #FF6B35;
+    --amber:  #FFAB5E;
+    --bg:     #080808;
+    --surf:   #0F0F0F;
+    --card:   #141414;
+    --border: #222222;
+    --text:   #F0EDEA;
+    --muted:  #888880;
+    --green:  #34D399;
+    --red:    #F87171;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg); color: var(--text);
+    font-size: 15px; line-height: 1.6;
+    padding: 0 16px 60px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    max-width: 600px; margin: 0 auto;
+    padding: 40px 0 32px;
+    border-bottom: 1px solid var(--border);
+  }
+  .logo-row { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .logo-icon {
+    width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--papaya), var(--amber));
+    display: flex; align-items: center; justify-content: center; font-size: 22px;
+  }
+  .logo-text { font-family: 'IBM Plex Mono', monospace; font-size: 20px; font-weight: 600; }
+  .beta-tag {
+    display: inline-block; font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; padding: 2px 8px; border-radius: 20px;
+    background: rgba(255,107,53,.12); color: var(--papaya);
+    border: 1px solid rgba(255,107,53,.25); margin-left: 8px; vertical-align: middle;
+  }
+  .header h1 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+  .header p { color: var(--muted); font-size: 14px; max-width: 480px; }
+
+  /* ── CALL BOX ── */
+  .wrap { max-width: 600px; margin: 0 auto; }
+  .call-box {
+    background: var(--card); border: 1px solid rgba(255,107,53,.3);
+    border-radius: 14px; padding: 20px 22px; margin: 28px 0;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    flex-wrap: wrap;
+  }
+  .call-label { font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); font-family: 'IBM Plex Mono', monospace; margin-bottom: 6px; }
+  .call-number { font-family: 'IBM Plex Mono', monospace; font-size: 24px; font-weight: 600; color: var(--papaya); }
+  .call-hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .call-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--papaya); color: #fff; text-decoration: none;
+    padding: 12px 22px; border-radius: 10px; font-weight: 600; font-size: 14px;
+    white-space: nowrap;
+  }
+
+  /* ── SECTION ── */
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+    text-transform: uppercase; letter-spacing: .1em; color: var(--muted);
+    margin: 32px 0 14px;
+  }
+
+  /* ── FIRST CALL ── */
+  .first-call {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 18px 20px;
+    margin-bottom: 10px;
+  }
+  .first-call ol { padding-left: 20px; color: var(--muted); font-size: 14px; }
+  .first-call ol li { margin-bottom: 6px; }
+  .first-call ol li span { color: var(--text); }
+
+  /* ── SCENARIO CARDS ── */
+  .scenario {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 18px 20px; margin-bottom: 10px;
+  }
+  .scenario-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .scenario-num {
+    width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+    background: rgba(255,107,53,.12); border: 1px solid rgba(255,107,53,.25);
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600;
+    color: var(--papaya); display: flex; align-items: center; justify-content: center;
+  }
+  .scenario-title { font-weight: 600; font-size: 15px; }
+  .scenario-tag {
+    margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+    padding: 2px 8px; border-radius: 20px; border: 1px solid var(--border);
+    color: var(--muted); white-space: nowrap;
+  }
+  .say-row {
+    background: var(--surf); border-radius: 8px; padding: 10px 14px;
+    margin-bottom: 8px;
+  }
+  .say-label { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-family: 'IBM Plex Mono', monospace; margin-bottom: 3px; }
+  .say-text { font-size: 14px; color: var(--amber); font-style: italic; margin-top: 3px; }
+  .flow-steps { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+  .flow-step { font-size: 13px; color: var(--muted); padding-left: 4px; }
+  .flow-step::before { content: '→ '; color: var(--papaya); }
+  .flow-step span { color: var(--text); }
+  .expect { font-size: 13px; color: var(--muted); margin-top: 10px; }
+  .expect strong { color: var(--text); }
+
+  /* ── WHAT TO WATCH ── */
+  .watch-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .watch-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 16px;
+  }
+  .watch-icon { font-size: 18px; margin-bottom: 8px; }
+  .watch-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .watch-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  /* ── FEEDBACK FORM ── */
+  .feedback-section {
+    background: var(--card); border: 1px solid rgba(255,107,53,.25);
+    border-radius: 14px; padding: 20px 22px; margin-top: 10px;
+  }
+  .feedback-section h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .feedback-section > p { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
+
+  .form-group { margin-bottom: 14px; }
+  .form-label {
+    display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .08em;
+    color: var(--muted); font-family: 'IBM Plex Mono', monospace; margin-bottom: 6px;
+  }
+  .form-select, .form-input, .form-textarea {
+    width: 100%; background: var(--surf); border: 1px solid var(--border);
+    border-radius: 8px; color: var(--text); font-family: 'Inter', sans-serif;
+    font-size: 14px; padding: 10px 12px;
+    transition: border-color .15s;
+    -webkit-appearance: none;
+  }
+  .form-select:focus, .form-input:focus, .form-textarea:focus {
+    outline: none; border-color: var(--papaya);
+  }
+  .form-textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
+  .form-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888880' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
+
+  .star-row { display: flex; gap: 8px; }
+  .star-btn {
+    background: none; border: none; font-size: 24px; cursor: pointer;
+    opacity: .35; transition: opacity .1s, transform .1s;
+    padding: 2px; line-height: 1;
+  }
+  .star-btn.active { opacity: 1; }
+  .star-btn:hover { transform: scale(1.15); opacity: .75; }
+
+  .submit-btn {
+    width: 100%; padding: 13px; border-radius: 10px;
+    background: var(--papaya); color: #fff; font-family: 'Inter', sans-serif;
+    font-size: 15px; font-weight: 600; border: none; cursor: pointer;
+    margin-top: 6px; transition: opacity .15s;
+  }
+  .submit-btn:disabled { opacity: .5; cursor: default; }
+
+  .toast {
+    display: none; background: rgba(52,211,153,.12); border: 1px solid rgba(52,211,153,.3);
+    color: var(--green); border-radius: 8px; padding: 12px 16px;
+    font-size: 14px; margin-top: 12px; text-align: center;
+  }
+  .toast.visible { display: block; }
+  .toast.error { background: rgba(248,113,113,.1); border-color: rgba(248,113,113,.3); color: var(--red); }
+
+  /* ── LOG TABLE ── */
+  .log-section {
+    background: var(--surf); border: 1px solid var(--border);
+    border-radius: 12px; padding: 18px 20px; margin-top: 10px;
+  }
+  .log-section h4 { font-size: 14px; font-weight: 600; margin-bottom: 12px; color: var(--muted); }
+  .log-empty { font-size: 13px; color: var(--muted); text-align: center; padding: 16px 0; }
+  .log-entry {
+    border-top: 1px solid var(--border); padding: 12px 0;
+  }
+  .log-entry:first-child { border-top: none; }
+  .log-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; flex-wrap: wrap; }
+  .log-tag {
+    font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+    padding: 2px 7px; border-radius: 20px; border: 1px solid var(--border); color: var(--muted);
+  }
+  .log-name { font-size: 12px; color: var(--muted); }
+  .log-stars { font-size: 12px; letter-spacing: -.5px; }
+  .log-time { font-size: 11px; color: var(--muted); margin-left: auto; font-family: 'IBM Plex Mono', monospace; }
+  .log-body { font-size: 13px; color: var(--text); line-height: 1.5; }
+  .log-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  /* ── FOOTER ── */
+  .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 12px; color: var(--muted); text-align: center; font-family: 'IBM Plex Mono', monospace; }
+
+  @media (max-width: 480px) {
+    .watch-grid { grid-template-columns: 1fr; }
+    .call-number { font-size: 20px; }
+    .scenario-tag { display: none; }
+  }
+</style>
+
+<div class="header">
+  <div class="logo-row">
+    <div class="logo-icon">🎙️</div>
+    <span class="logo-text">Kalvox <span class="beta-tag">BETA</span></span>
+  </div>
+  <h1>AI Receptionist — Tester Guide</h1>
+  <p>Thank you for helping test Kalvox, an AI voice receptionist for Deccan Spice restaurant. This guide walks you through what to try and what to look out for.</p>
+</div>
+
+<div class="wrap">
+
+  <!-- CALL NUMBER -->
+  <div class="call-box">
+    <div class="call-box-left">
+      <div class="call-label">Test Line</div>
+      <div class="call-number" id="call-number">+1 (920) 816-1305</div>
+      <div class="call-hint">Available 24 × 7 during the test period</div>
+    </div>
+    <button class="call-btn" id="copy-btn" type="button" onclick="copyNumber()">📋 Copy number</button>
+  </div>
+  <div id="copy-toast" style="display:none;background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.3);color:#34D399;border-radius:8px;padding:10px 14px;font-size:13px;text-align:center;margin-bottom:8px;">✓ Number copied — paste it into your phone dialler</div>
+
+  <!-- KNOWN ISSUES -->
+  <div class="section-label">Known limitations</div>
+  <div class="first-call" style="border-color: rgba(255,171,94,.25);">
+    <ol>
+      <li><span><strong>WhatsApp confirmations:</strong> During a reservation, the AI may offer to send you a WhatsApp confirmation. You might hear this offer but <em>not receive the message</em> — that's expected. The WhatsApp channel is still being built and is not live yet. You don't need to flag this as a bug.</span></li>
+    </ol>
+  </div>
+
+  <!-- BEFORE CALL -->
+  <div class="section-label">Before you call</div>
+  <div class="first-call">
+    <ol>
+      <li><span>Call from any phone — mobile or landline.</span></li>
+      <li><span>You will hear a greeting identifying the AI assistant and a recording notice.</span></li>
+      <li><span>Speak naturally after the greeting — no need to wait for a beep.</span></li>
+      <li><span>Try each scenario below in separate calls, or chain a few in one call.</span></li>
+    </ol>
+  </div>
+
+  <!-- SCENARIOS -->
+  <div class="section-label">Scenarios to test</div>
+
+  <div class="scenario">
+    <div class="scenario-header">
+      <div class="scenario-num">1</div>
+      <div class="scenario-title">Ask about today's specials</div>
+      <div class="scenario-tag">FAQ</div>
+    </div>
+    <div class="say-row">
+      <div class="say-label">Say something like</div>
+      <div class="say-text">"What are today's specials?" or "Do you have any specials tonight?"</div>
+    </div>
+    <div class="expect"><strong>Expected:</strong> The AI reads out the day's featured dishes with a brief description and price.</div>
+  </div>
+
+  <div class="scenario">
+    <div class="scenario-header">
+      <div class="scenario-num">2</div>
+      <div class="scenario-title">Make a reservation</div>
+      <div class="scenario-tag">RESERVATION</div>
+    </div>
+    <div class="say-row">
+      <div class="say-label">Start with</div>
+      <div class="say-text">"I'd like to make a reservation" or "Can I book a table?"</div>
+    </div>
+    <div class="flow-steps">
+      <div class="flow-step"><span>AI asks: party size?</span></div>
+      <div class="flow-step"><span>AI asks: preferred date and time?</span></div>
+      <div class="flow-step"><span>AI asks: name for the booking?</span></div>
+      <div class="flow-step"><span>AI confirms and saves — you hear a confirmation read back.</span></div>
+    </div>
+    <div class="expect" style="margin-top:10px"><strong>Tip:</strong> State your intent first ("I'd like to make a reservation"), then let the AI guide you step by step.</div>
+    <div class="expect" style="margin-top:6px"><strong>Name tip:</strong> When asked for your name, say it clearly and slowly. If the AI mishears it, try spelling your first name letter by letter — e.g. "R-A-H-U-L". Note down whether it got it right either way.</div>
+  </div>
+
+  <div class="scenario">
+    <div class="scenario-header">
+      <div class="scenario-num">3</div>
+      <div class="scenario-title">Ask about opening hours</div>
+      <div class="scenario-tag">HOURS</div>
+    </div>
+    <div class="say-row">
+      <div class="say-label">Say something like</div>
+      <div class="say-text">"Are you open on Sundays?" or "What time do you close?"</div>
+    </div>
+    <div class="expect"><strong>Expected:</strong> AI gives the restaurant's hours clearly and naturally.</div>
+  </div>
+
+  <div class="scenario">
+    <div class="scenario-header">
+      <div class="scenario-num">4</div>
+      <div class="scenario-title">Ask a specific question</div>
+      <div class="scenario-tag">FAQ</div>
+    </div>
+    <div class="say-row">
+      <div class="say-label">Say something like</div>
+      <div class="say-text">"Is the food halal?" or "Do you have parking?" or "Do you do catering?"</div>
+    </div>
+    <div class="expect"><strong>Expected:</strong> AI answers based on the restaurant's FAQ. Halal, parking, vegetarian options, and catering are all covered. Should sound natural, not robotic.</div>
+  </div>
+
+  <div class="scenario">
+    <div class="scenario-header">
+      <div class="scenario-num">5</div>
+      <div class="scenario-title">Try to place an order</div>
+      <div class="scenario-tag">ORDER</div>
+    </div>
+    <div class="say-row">
+      <div class="say-label">Say something like</div>
+      <div class="say-text">"I'd like to order some food" or "Can I order a takeaway?"</div>
+    </div>
+    <div class="expect"><strong>Expected:</strong> AI politely explains that phone orders are not available right now and offers to help with a reservation or answer questions instead.</div>
+  </div>
+
+  <div class="scenario">
+    <div class="scenario-header">
+      <div class="scenario-num">6</div>
+      <div class="scenario-title">Say nothing — silence test</div>
+      <div class="scenario-tag">RETRY</div>
+    </div>
+    <div class="say-row">
+      <div class="say-label">What to do</div>
+      <div class="say-text">Stay silent for a few seconds after the greeting.</div>
+    </div>
+    <div class="expect"><strong>Expected:</strong> AI politely prompts you again. After two attempts it thanks you and ends the call gracefully.</div>
+  </div>
+
+  <div class="scenario">
+    <div class="scenario-header">
+      <div class="scenario-num">7</div>
+      <div class="scenario-title">Say something unexpected</div>
+      <div class="scenario-tag">OTHER</div>
+    </div>
+    <div class="say-row">
+      <div class="say-label">Say something like</div>
+      <div class="say-text">"What's the weather today?" or "I need to speak to a manager."</div>
+    </div>
+    <div class="expect"><strong>Expected:</strong> AI acknowledges it can't help with that and offers to assist with reservations, specials, or questions about the restaurant.</div>
+  </div>
+
+  <!-- WHAT TO WATCH FOR -->
+  <div class="section-label">What to pay attention to</div>
+  <div class="watch-grid">
+    <div class="watch-card">
+      <div class="watch-icon">🎧</div>
+      <div class="watch-title">Voice quality</div>
+      <div class="watch-desc">Is the AI voice clear and natural? Does it sound like a good restaurant receptionist?</div>
+    </div>
+    <div class="watch-card">
+      <div class="watch-icon">🧠</div>
+      <div class="watch-title">Understanding</div>
+      <div class="watch-desc">Did it understand what you asked, even with an accent or casual phrasing?</div>
+    </div>
+    <div class="watch-card">
+      <div class="watch-icon">⚡</div>
+      <div class="watch-title">Response speed</div>
+      <div class="watch-desc">How long did it take to respond after you finished speaking?</div>
+    </div>
+    <div class="watch-card">
+      <div class="watch-icon">💬</div>
+      <div class="watch-title">Conversation flow</div>
+      <div class="watch-desc">Did the conversation feel natural, or did anything feel awkward or out of place?</div>
+    </div>
+  </div>
+
+  <!-- FEEDBACK FORM -->
+  <div class="section-label">Log your feedback</div>
+  <div class="feedback-section">
+    <h3>Submit observations here</h3>
+    <p>Fill this in right after a call. Hit Submit and it opens WhatsApp with your feedback pre-filled — just tap Send.</p>
+
+    <div class="form-group">
+      <label class="form-label" for="fb-name">Your name (optional)</label>
+      <input id="fb-name" class="form-input" type="text" placeholder="e.g. Priya">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="fb-scenario">Scenario tested</label>
+      <select id="fb-scenario" class="form-select">
+        <option value="">— pick one —</option>
+        <option value="1 – Specials">1 – Ask about today's specials</option>
+        <option value="2 – Reservation">2 – Make a reservation</option>
+        <option value="3 – Hours">3 – Ask about opening hours</option>
+        <option value="4 – FAQ">4 – Ask a specific question (halal, parking, etc.)</option>
+        <option value="5 – Place an order">5 – Try to place an order</option>
+        <option value="6 – Silence">6 – Silence test</option>
+        <option value="7 – Unexpected">7 – Say something unexpected</option>
+        <option value="Other">Other / free-form</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="fb-said">What you said</label>
+      <input id="fb-said" class="form-input" type="text" placeholder="e.g. Is the food halal?">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="fb-response">What the AI said back</label>
+      <textarea id="fb-response" class="form-textarea" placeholder="Summarise what you heard…"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Overall rating</label>
+      <div class="star-row" id="star-row">
+        <button class="star-btn" data-v="1" type="button">⭐</button>
+        <button class="star-btn" data-v="2" type="button">⭐</button>
+        <button class="star-btn" data-v="3" type="button">⭐</button>
+        <button class="star-btn" data-v="4" type="button">⭐</button>
+        <button class="star-btn" data-v="5" type="button">⭐</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="fb-notes">Extra notes (optional)</label>
+      <textarea id="fb-notes" class="form-textarea" style="min-height:60px" placeholder="Anything else — lag, wrong answer, mispronunciation…"></textarea>
+    </div>
+
+    <button class="submit-btn" id="submit-btn" type="button">📲 Send via WhatsApp</button>
+    <div class="toast" id="toast"></div>
+  </div>
+
+  <div class="footer">
+    Kalvox by Kalytics &nbsp;·&nbsp; Beta Test &nbsp;·&nbsp; All calls are recorded for development purposes
+  </div>
+
+</div>
+
+<script>
+  /* ── copy number ── */
+  function copyNumber() {
+    const num = '+19208161305';
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(num).then(showCopyToast).catch(fallbackCopy);
+    } else {
+      fallbackCopy();
+    }
+  }
+  function fallbackCopy() {
+    // execCommand fallback for older/restricted browsers
+    const el = document.createElement('textarea');
+    el.value = '+19208161305';
+    el.style.position = 'fixed'; el.style.opacity = '0';
+    document.body.appendChild(el);
+    el.select();
+    try { document.execCommand('copy'); showCopyToast(); } catch(e) {}
+    document.body.removeChild(el);
+  }
+  function showCopyToast() {
+    const t = document.getElementById('copy-toast');
+    t.style.display = 'block';
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => { t.style.display = 'none'; btn.textContent = '📋 Copy number'; }, 4000);
+  }
+
+  /* ── star picker ── */
+  let rating = 0;
+  const stars = document.querySelectorAll('.star-btn');
+  stars.forEach(btn => {
+    btn.addEventListener('click', () => {
+      rating = parseInt(btn.dataset.v);
+      stars.forEach(s => s.classList.toggle('active', parseInt(s.dataset.v) <= rating));
+    });
+  });
+
+  /* ── submit → WhatsApp ── */
+  document.getElementById('submit-btn').addEventListener('click', () => {
+    const scenario = document.getElementById('fb-scenario').value;
+    const said     = document.getElementById('fb-said').value.trim();
+    const response = document.getElementById('fb-response').value.trim();
+
+    if (!scenario || !said || !response) {
+      showToast('Please fill in scenario, what you said, and what the AI responded.', true);
+      return;
+    }
+
+    const name  = document.getElementById('fb-name').value.trim() || 'Anonymous';
+    const notes = document.getElementById('fb-notes').value.trim();
+    const stars_str = rating ? '⭐'.repeat(rating) : 'Not rated';
+
+    const lines = [
+      '🧪 *Kalvox Beta Feedback*',
+      '',
+      `*Tester:* ${name}`,
+      `*Scenario:* ${scenario}`,
+      `*Rating:* ${stars_str}`,
+      '',
+      `*What I said:* ${said}`,
+      `*AI responded:* ${response}`,
+    ];
+    if (notes) lines.push(`*Notes:* ${notes}`);
+
+    const msg = lines.join('\n');
+    const url = 'https://wa.me/919346222022?text=' + encodeURIComponent(msg);
+
+    // Create a real anchor and click it — works inside iframes where window.open is blocked
+    const a = document.createElement('a');
+    a.href = url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    // Show a manual fallback link in the toast in case the click was caught by a popup blocker
+    const t = document.getElementById('toast');
+    t.innerHTML = '✓ Feedback ready — <a href="' + url + '" target="_blank" rel="noopener noreferrer" style="color:var(--green);font-weight:700;text-decoration:underline;">tap here to open WhatsApp</a> if it didn\'t open automatically.';
+    t.className = 'toast visible';
+    setTimeout(() => t.classList.remove('visible'), 12000);
+
+    resetForm();
+  });
+
+  function showToast(msg, isError) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast visible' + (isError ? ' error' : '');
+    setTimeout(() => t.classList.remove('visible'), 5000);
+  }
+
+  function resetForm() {
+    ['fb-name','fb-said','fb-response','fb-notes'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('fb-scenario').value = '';
+    rating = 0;
+    stars.forEach(s => s.classList.remove('active'));
+  }
+</script>
